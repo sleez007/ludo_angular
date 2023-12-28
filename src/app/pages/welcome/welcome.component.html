@@ -1,0 +1,19 @@
+<div class="h-full w-full bg-red-950 flex items-center justify-center">
+  <div class="wrapper | w-[750px] h-[750px] bg-white">
+    <div class="row | flex">
+      <app-game-home [color]="colors.BLUE" />
+      <app-square-grid [isVertical]="true" [color]="colors.RED" />
+      <app-game-home [color]="colors.RED" />
+    </div>
+    <div class="row | flex flex-1 justify-between">
+      <app-square-grid [isVertical]="false" [color]="colors.BLUE" />
+      <app-center-square />
+      <app-square-grid [isVertical]="false" [color]="colors.GREEN" />
+    </div>
+    <div class="row | flex">
+      <app-game-home [color]="colors.YELLOW" />
+      <app-square-grid [isVertical]="true" [color]="colors.YELLOW" />
+      <app-game-home [color]="colors.GREEN" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div
+  class="home | bg-white border border-black flex"
+  [ngClass]="{' h-[300px] w-[150px] flex-row': isVertical,  ' h-[150px] w-[300px]  flex-col': !isVertical,}"
+>
+  <div
+    [ngClass]="{
+      'flex-col': isVertical,
+      'flex-row': !isVertical
+    }"
+    class="row | flex-1 flex"
+  >
+    @for (item of row1Data; track $index) {
+    <app-square
+      [ngClass]="{
+        'border-b': isVertical && !$last,
+        'border-r': !isVertical && !$last
+      }"
+      class="flex-1 border-black"
+    />
+    }
+  </div>
+  <div
+    [ngClass]="{
+      'border-l border-r flex-col': isVertical,
+      'border-t border-b  flex-row': !isVertical
+    }"
+    class="row | flex-1 flex border-black"
+  >
+    @for (item of row2Data; track $index) {
+    <app-square
+      [ngClass]="{
+        'border-b': isVertical && !$last,
+        'border-r': !isVertical && !$last
+      }"
+      class="flex-1 border-black"
+      [style.backgroundColor]="
+        !isVertical && !$last ? color : isVertical && !$first ? color : ''
+      "
+    />
+    }
+  </div>
+  <div
+    [ngClass]="{
+      'flex-col': isVertical,
+      'flex-row': !isVertical
+    }"
+    class="row | flex flex-1"
+  >
+    @for (item of row3Data; track $index) {
+    <app-square
+      [ngClass]="{
+        'border-b': isVertical && !$last,
+        'border-r': !isVertical && !$last
+      }"
+      class="flex-1 border-black"
+    />
+    }
+  </div>
+</div>
