@@ -1,19 +1,65 @@
-<div class="h-full w-full bg-red-950 flex items-center justify-center">
+<div class="h-full w-full bg-red-950 flex items-center justify-center relative">
   <div class="wrapper | w-[750px] h-[750px] bg-white">
     <div class="row | flex">
-      <app-game-home [color]="colors.BLUE" />
-      <app-square-grid [isVertical]="true" [color]="colors.RED" />
-      <app-game-home [color]="colors.RED" />
+      <app-game-home
+        [color]="colorSegment[squareMatrix.SQUARE_1].color"
+        [diceColor]="colorSegment[squareMatrix.SQUARE_1].diceColor"
+        [playerName]="colorSegment[squareMatrix.SQUARE_1].playerName ?? ''"
+        [idPrefix]="colorSegment[squareMatrix.SQUARE_1].idPrefix"
+      />
+      <app-square-grid
+        [matrix]="colorSegment[squareMatrix.SQUARE_2].main"
+        [isVertical]="true"
+        [idPrefix]="colorSegment[squareMatrix.SQUARE_2].idPrefix"
+        [color]="colorSegment[squareMatrix.SQUARE_2].color"
+        [cssColor]="colorSegment[squareMatrix.SQUARE_2].cssClass"
+      />
+      <app-game-home
+        [color]="colorSegment[squareMatrix.SQUARE_2].color"
+        [diceColor]="colorSegment[squareMatrix.SQUARE_2].diceColor"
+        [playerName]="colorSegment[squareMatrix.SQUARE_2].playerName ?? ''"
+        [idPrefix]="colorSegment[squareMatrix.SQUARE_2].idPrefix"
+      />
     </div>
     <div class="row | flex flex-1 justify-between">
-      <app-square-grid [isVertical]="false" [color]="colors.BLUE" />
+      <app-square-grid
+        [isVertical]="false"
+        [matrix]="colorSegment[squareMatrix.SQUARE_1].main"
+        [color]="colorSegment[squareMatrix.SQUARE_1].color"
+        [cssColor]="colorSegment[squareMatrix.SQUARE_1].cssClass"
+        [idPrefix]="colorSegment[squareMatrix.SQUARE_1].idPrefix"
+      />
       <app-center-square />
-      <app-square-grid [isVertical]="false" [color]="colors.GREEN" />
+      <app-square-grid
+        [isVertical]="false"
+        [matrix]="colorSegment[squareMatrix.SQUARE_4].main"
+        [color]="colorSegment[squareMatrix.SQUARE_4].color"
+        [cssColor]="colorSegment[squareMatrix.SQUARE_4].cssClass"
+        [idPrefix]="colorSegment[squareMatrix.SQUARE_4].idPrefix"
+      />
     </div>
     <div class="row | flex">
-      <app-game-home [color]="colors.YELLOW" />
-      <app-square-grid [isVertical]="true" [color]="colors.YELLOW" />
-      <app-game-home [color]="colors.GREEN" />
+      <app-game-home
+        [color]="colorSegment[squareMatrix.SQUARE_3].color"
+        [diceColor]="colorSegment[squareMatrix.SQUARE_3].diceColor"
+        [playerName]="colorSegment[squareMatrix.SQUARE_3].playerName ?? ''"
+        [idPrefix]="colorSegment[squareMatrix.SQUARE_3].idPrefix"
+      />
+      <app-square-grid
+        [isVertical]="true"
+        [matrix]="colorSegment[squareMatrix.SQUARE_3].main"
+        [color]="colorSegment[squareMatrix.SQUARE_3].color"
+        [cssColor]="colorSegment[squareMatrix.SQUARE_3].cssClass"
+        [idPrefix]="colorSegment[squareMatrix.SQUARE_3].idPrefix"
+      />
+      <app-game-home
+        [color]="colorSegment[squareMatrix.SQUARE_4].color"
+        [diceColor]="colorSegment[squareMatrix.SQUARE_4].diceColor"
+        [playerName]="colorSegment[squareMatrix.SQUARE_4].playerName ?? ''"
+        [idPrefix]="colorSegment[squareMatrix.SQUARE_4].idPrefix"
+      />
     </div>
   </div>
+
+  <app-control />
 </div>

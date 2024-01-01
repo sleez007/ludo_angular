@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-dice',
   standalone: true,
   imports: [],
   templateUrl: './dice.component.html',
-  styleUrl: './dice.component.scss'
+  styleUrl: './dice.component.scss',
 })
 export class DiceComponent {
-
+  @Input({ required: true }) value!: number;
 }

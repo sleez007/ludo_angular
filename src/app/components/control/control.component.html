@@ -1,0 +1,17 @@
+<div class="w-[300px] h-[300px] bg-white fixed bottom-10 right-4 p-4">
+  <h2 class="text-center">Game Controls</h2>
+  <div class="dice_wrapper | flex justify-center space-x-8">
+    <app-dice [value]="5" />
+    <app-dice [value]="3" />
+  </div>
+  <div>
+    <div class="mt-4 flex justify-center">
+      <button
+        class="rounded bg-[royalblue] cursor-pointer text-white p-2 text-center"
+      >
+        Roll Dice
+      </button>
+    </div>
+    <div class="text-center mt-4">Player: Current Player</div>
+  </div>
+</div>

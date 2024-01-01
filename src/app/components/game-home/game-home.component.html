@@ -1,15 +1,54 @@
 <div
-  class="home | w-[300px] h-[300px] flex items-center justify-center"
+  class="home | w-[300px] h-[300px] flex items-center justify-center relative"
   [style.backgroundColor]="color"
 >
+  <p class="absolute text-white font-bold left-[16px] top-[16px]">
+    {{ playerName }}
+  </p>
   <div class="w-[200px] h-[200px] bg-white flex flex-col justify-between">
     <div class="row | flex flex-1 items-center justify-evenly">
-      <div class="w-[60px] h-[60px]" [style.backgroundColor]="color"></div>
-      <div class="w-[60px] h-[60px]" [style.backgroundColor]="color"></div>
+      <div
+        class="w-[60px] h-[60px] flex items-center justify-center"
+        [style.backgroundColor]="color"
+      >
+        <div
+          [id]="idPrefix + 'ce-0'"
+          [style.backgroundColor]="diceColor"
+          class="rounded-[50%] h-[30px] w-[30px]"
+        ></div>
+      </div>
+      <div
+        class="w-[60px] h-[60px] flex items-center justify-center"
+        [style.backgroundColor]="color"
+      >
+        <div
+          [id]="idPrefix + 'ce-1'"
+          [style.backgroundColor]="diceColor"
+          class="rounded-[50%] h-[30px] w-[30px]"
+        ></div>
+      </div>
     </div>
     <div class="row | flex flex-1 items-center justify-evenly">
-      <div class="w-[60px] h-[60px]" [style.backgroundColor]="color"></div>
-      <div class="w-[60px] h-[60px]" [style.backgroundColor]="color"></div>
+      <div
+        class="w-[60px] h-[60px] flex items-center justify-center"
+        [style.backgroundColor]="color"
+      >
+        <div
+          [id]="idPrefix + 'ce-2'"
+          [style.backgroundColor]="diceColor"
+          class="rounded-[50%] h-[30px] w-[30px]"
+        ></div>
+      </div>
+      <div
+        class="w-[60px] h-[60px] flex items-center justify-center"
+        [style.backgroundColor]="color"
+      >
+        <div
+          [id]="idPrefix + 'ce-3'"
+          [style.backgroundColor]="diceColor"
+          class="rounded-[50%] h-[30px] w-[30px]"
+        ></div>
+      </div>
     </div>
   </div>
 </div>

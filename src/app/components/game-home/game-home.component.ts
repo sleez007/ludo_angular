@@ -10,4 +10,7 @@ import { GameColor } from '../../model';
 })
 export class GameHomeComponent {
   @Input({ required: true }) color!: GameColor;
+  @Input({ required: true }) diceColor!: string;
+  @Input({ required: true }) playerName!: string;
+  @Input({ required: true }) idPrefix!: string;
 }

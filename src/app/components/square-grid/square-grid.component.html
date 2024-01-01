@@ -9,33 +9,30 @@
     }"
     class="row | flex-1 flex"
   >
-    @for (item of row1Data; track $index) {
+    @for (item of matrix[0]; track $index) {
     <app-square
-      [ngClass]="{
-        'border-b': isVertical && !$last,
-        'border-r': !isVertical && !$last
-      }"
+      [value]="item"
+      [idPrefix]="idPrefix"
+      [class]="item != 12 && item != 0 ? cssColor : '!border-0'"
       class="flex-1 border-black"
+      [style.backgroundColor]="item == 8 ? color : ''"
     />
     }
   </div>
   <div
     [ngClass]="{
       'border-l border-r flex-col': isVertical,
-      'border-t border-b  flex-row': !isVertical
+      'border-t border-b flex-row': !isVertical
     }"
     class="row | flex-1 flex border-black"
   >
-    @for (item of row2Data; track $index) {
+    @for (item of matrix[1]; track $index) {
     <app-square
-      [ngClass]="{
-        'border-b': isVertical && !$last,
-        'border-r': !isVertical && !$last
-      }"
-      class="flex-1 border-black"
-      [style.backgroundColor]="
-        !isVertical && !$last ? color : isVertical && !$first ? color : ''
-      "
+      [value]="item"
+      [idPrefix]="idPrefix + '-inner'"
+      [class]="item != 4 ? cssColor : ''"
+      class="flex-1"
+      [style.backgroundColor]="item != 6 ? color : ''"
     />
     }
   </div>
@@ -46,13 +43,13 @@
     }"
     class="row | flex flex-1"
   >
-    @for (item of row3Data; track $index) {
+    @for (item of matrix[2]; track $index) {
     <app-square
-      [ngClass]="{
-        'border-b': isVertical && !$last,
-        'border-r': !isVertical && !$last
-      }"
-      class="flex-1 border-black"
+      [value]="item"
+      [idPrefix]="idPrefix"
+      [class]="item != 12 && item != 0 ? cssColor : '!border-0'"
+      class="flex-1"
+      [style.backgroundColor]="item == 8 ? color : ''"
     />
     }
   </div>
