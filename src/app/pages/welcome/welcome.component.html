@@ -1,65 +1,75 @@
-<div class="h-full w-full bg-red-950 flex items-center justify-center relative">
-  <div class="wrapper | w-[750px] h-[750px] bg-white">
-    <div class="row | flex">
-      <app-game-home
-        [color]="colorSegment[squareMatrix.SQUARE_1].color"
-        [diceColor]="colorSegment[squareMatrix.SQUARE_1].diceColor"
-        [playerName]="colorSegment[squareMatrix.SQUARE_1].playerName ?? ''"
-        [idPrefix]="colorSegment[squareMatrix.SQUARE_1].idPrefix"
-      />
-      <app-square-grid
-        [matrix]="colorSegment[squareMatrix.SQUARE_2].main"
-        [isVertical]="true"
-        [idPrefix]="colorSegment[squareMatrix.SQUARE_2].idPrefix"
-        [color]="colorSegment[squareMatrix.SQUARE_2].color"
-        [cssColor]="colorSegment[squareMatrix.SQUARE_2].cssClass"
-      />
-      <app-game-home
-        [color]="colorSegment[squareMatrix.SQUARE_2].color"
-        [diceColor]="colorSegment[squareMatrix.SQUARE_2].diceColor"
-        [playerName]="colorSegment[squareMatrix.SQUARE_2].playerName ?? ''"
-        [idPrefix]="colorSegment[squareMatrix.SQUARE_2].idPrefix"
-      />
+<ng-container
+  *ngIf="{
+    segment: segments$ | async,
+    initialized: initialized$ | async
+  } as obs"
+>
+  <div
+    class="h-full w-full bg-red-950 flex items-center justify-center relative"
+  >
+    <!-- {{ obs | json }} -->
+    <div *ngIf="obs.segment" class="wrapper | w-[750px] h-[750px] bg-white">
+      <div class="row | flex">
+        <app-game-home
+          [color]="obs.segment[squareMatrix.SQUARE_1].color"
+          [diceColor]="obs.segment[squareMatrix.SQUARE_1].diceColor"
+          [playerName]="obs.segment[squareMatrix.SQUARE_1].playerName ?? ''"
+          [idPrefix]="obs.segment[squareMatrix.SQUARE_1].idPrefix"
+        />
+        <app-square-grid
+          [matrix]="obs.segment[squareMatrix.SQUARE_2].main"
+          [isVertical]="true"
+          [idPrefix]="obs.segment[squareMatrix.SQUARE_2].idPrefix"
+          [color]="obs.segment[squareMatrix.SQUARE_2].color"
+          [cssColor]="obs.segment[squareMatrix.SQUARE_2].cssClass"
+        />
+        <app-game-home
+          [color]="obs.segment[squareMatrix.SQUARE_2].color"
+          [diceColor]="obs.segment[squareMatrix.SQUARE_2].diceColor"
+          [playerName]="obs.segment[squareMatrix.SQUARE_2].playerName ?? ''"
+          [idPrefix]="obs.segment[squareMatrix.SQUARE_2].idPrefix"
+        />
+      </div>
+      <div class="row | flex flex-1 justify-between">
+        <app-square-grid
+          [isVertical]="false"
+          [matrix]="obs.segment[squareMatrix.SQUARE_1].main"
+          [color]="obs.segment[squareMatrix.SQUARE_1].color"
+          [cssColor]="obs.segment[squareMatrix.SQUARE_1].cssClass"
+          [idPrefix]="obs.segment[squareMatrix.SQUARE_1].idPrefix"
+        />
+        <app-center-square />
+        <app-square-grid
+          [isVertical]="false"
+          [matrix]="obs.segment[squareMatrix.SQUARE_4].main"
+          [color]="obs.segment[squareMatrix.SQUARE_4].color"
+          [cssColor]="obs.segment[squareMatrix.SQUARE_4].cssClass"
+          [idPrefix]="obs.segment[squareMatrix.SQUARE_4].idPrefix"
+        />
+      </div>
+      <div class="row | flex">
+        <app-game-home
+          [color]="obs.segment[squareMatrix.SQUARE_3].color"
+          [diceColor]="obs.segment[squareMatrix.SQUARE_3].diceColor"
+          [playerName]="obs.segment[squareMatrix.SQUARE_3].playerName ?? ''"
+          [idPrefix]="obs.segment[squareMatrix.SQUARE_3].idPrefix"
+        />
+        <app-square-grid
+          [isVertical]="true"
+          [matrix]="obs.segment[squareMatrix.SQUARE_3].main"
+          [color]="obs.segment[squareMatrix.SQUARE_3].color"
+          [cssColor]="obs.segment[squareMatrix.SQUARE_3].cssClass"
+          [idPrefix]="obs.segment[squareMatrix.SQUARE_3].idPrefix"
+        />
+        <app-game-home
+          [color]="obs.segment[squareMatrix.SQUARE_4].color"
+          [diceColor]="obs.segment[squareMatrix.SQUARE_4].diceColor"
+          [playerName]="obs.segment[squareMatrix.SQUARE_4].playerName ?? ''"
+          [idPrefix]="obs.segment[squareMatrix.SQUARE_4].idPrefix"
+        />
+      </div>
     </div>
-    <div class="row | flex flex-1 justify-between">
-      <app-square-grid
-        [isVertical]="false"
-        [matrix]="colorSegment[squareMatrix.SQUARE_1].main"
-        [color]="colorSegment[squareMatrix.SQUARE_1].color"
-        [cssColor]="colorSegment[squareMatrix.SQUARE_1].cssClass"
-        [idPrefix]="colorSegment[squareMatrix.SQUARE_1].idPrefix"
-      />
-      <app-center-square />
-      <app-square-grid
-        [isVertical]="false"
-        [matrix]="colorSegment[squareMatrix.SQUARE_4].main"
-        [color]="colorSegment[squareMatrix.SQUARE_4].color"
-        [cssColor]="colorSegment[squareMatrix.SQUARE_4].cssClass"
-        [idPrefix]="colorSegment[squareMatrix.SQUARE_4].idPrefix"
-      />
-    </div>
-    <div class="row | flex">
-      <app-game-home
-        [color]="colorSegment[squareMatrix.SQUARE_3].color"
-        [diceColor]="colorSegment[squareMatrix.SQUARE_3].diceColor"
-        [playerName]="colorSegment[squareMatrix.SQUARE_3].playerName ?? ''"
-        [idPrefix]="colorSegment[squareMatrix.SQUARE_3].idPrefix"
-      />
-      <app-square-grid
-        [isVertical]="true"
-        [matrix]="colorSegment[squareMatrix.SQUARE_3].main"
-        [color]="colorSegment[squareMatrix.SQUARE_3].color"
-        [cssColor]="colorSegment[squareMatrix.SQUARE_3].cssClass"
-        [idPrefix]="colorSegment[squareMatrix.SQUARE_3].idPrefix"
-      />
-      <app-game-home
-        [color]="colorSegment[squareMatrix.SQUARE_4].color"
-        [diceColor]="colorSegment[squareMatrix.SQUARE_4].diceColor"
-        [playerName]="colorSegment[squareMatrix.SQUARE_4].playerName ?? ''"
-        [idPrefix]="colorSegment[squareMatrix.SQUARE_4].idPrefix"
-      />
-    </div>
-  </div>
 
-  <app-control />
-</div>
+    <app-control />
+  </div>
+</ng-container>

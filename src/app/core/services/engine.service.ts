@@ -1,159 +1,46 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { GameColor, ISegment, Player, SquareMatrix } from '../../model';
-import { GameService } from './game-play.service';
+import { DiceService } from './dice.service';
+import { PlayerService } from './game-play.service';
+import { Segment } from './segment';
+import { Subject, startWith, tap, withLatestFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EngineService {
-  private readonly gameService = inject(GameService);
-  houseArrangements: Array<GameColor> = [];
-  private readonly availableColors = [
-    GameColor.BLUE,
-    GameColor.GREEN,
-    GameColor.RED,
-    GameColor.YELLOW,
-  ];
+  private readonly playerService = inject(PlayerService);
+  private readonly diceService = inject(DiceService);
+  private readonly segment = inject(Segment);
+  readonly dice1$ = this.diceService.dice1$;
+  readonly dice2$ = this.diceService.dice2$;
+  readonly gameSegments$ = this.segment.segments$;
 
-  private colorSegment: { [x in SquareMatrix]: ISegment } = {
-    [SquareMatrix.SQUARE_1]: {
-      main: [
-        [7, 8, 9, 10, 11, 12],
-        [6, 0, 1, 2, 3, 4],
-        [5, 4, 3, 2, 1, 0],
-      ],
-      home: [],
-      color: GameColor.BLUE,
-      diceColor: '#18399a',
-      cssClass: 'border-r border-black',
-      idPrefix: 'l',
-    },
-    [SquareMatrix.SQUARE_2]: {
-      main: [
-        [5, 4, 3, 2, 1, 0],
-        [6, 0, 1, 2, 3, 4],
-        [7, 8, 9, 10, 11, 12],
-      ],
-      home: [],
-      color: GameColor.RED,
-      diceColor: '#b30000',
-      cssClass: 'border-b border-black',
-      idPrefix: 'u',
-    },
-    [SquareMatrix.SQUARE_3]: {
-      main: [
-        [12, 11, 10, 9, 8, 7],
-        [4, 3, 2, 1, 0, 6],
-        [0, 1, 2, 3, 4, 5],
-      ],
-      home: [],
-      color: GameColor.YELLOW,
-      diceColor: '#b2b300',
-      cssClass: 'border-t border-black',
-      idPrefix: 'd',
-    },
-    [SquareMatrix.SQUARE_4]: {
-      main: [
-        [0, 1, 2, 3, 4, 5],
-        [4, 3, 2, 1, 0, 6],
-        [12, 11, 10, 9, 8, 7],
-      ],
-      home: [],
-      color: GameColor.GREEN,
-      diceColor: '#00b300',
-      cssClass: 'border-l border-black',
-      idPrefix: 'o',
-    },
-  };
+  private readonly _gameStart$ = new Subject<void>();
+  readonly gameStart$ = this._gameStart$.asObservable().pipe(
+    startWith(''),
+    withLatestFrom(this.playerService.getPlayers()),
+    tap(([, players]) => this.segment.generateSegments(players))
+  );
 
-  getColorSegments() {
-    return Object.freeze(this.colorSegment);
+  rollDice() {
+    this.diceService.rollDice();
   }
 
-  setColorSegments() {
-    if (this.availableColors.length !== 4)
-      throw new Error('Invalid color segments');
-    this.houseArrangements = this.availableColors.sort(
-      () => Math.random() - 0.5
-    );
-    this.colorSegment[1].color = this.houseArrangements[0];
-    this.colorSegment[2].color = this.houseArrangements[1];
-    this.colorSegment[3].color = this.houseArrangements[2];
-    this.colorSegment[4].color = this.houseArrangements[3];
-    this.setDiceColors();
-  }
-
-  private setDiceColors() {
-    for (let key in this.colorSegment) {
-      const segment = (this.colorSegment as any)[key] as ISegment;
-      switch (segment.color) {
-        case GameColor.BLUE: {
-          segment.diceColor = '#18399a';
-          break;
-        }
-        case GameColor.GREEN: {
-          segment.diceColor = '#00b300';
-          break;
-        }
-        case GameColor.RED: {
-          segment.diceColor = '#b30000';
-          break;
-        }
-        case GameColor.YELLOW: {
-          segment.diceColor = '#e5e600';
-          break;
-        }
-      }
-    }
-    this.colorSegment[1].color = this.houseArrangements[0];
-    this.colorSegment[2].color = this.houseArrangements[1];
-    this.colorSegment[3].color = this.houseArrangements[2];
-    this.colorSegment[4].color = this.houseArrangements[3];
-  }
-
-  setNumberOfPlayer(no: 2 | 4) {
-    const players: Player[] = [
-      {
-        name: 'Player 1',
-        territories: [1, 3],
-        score: 0,
-      },
-      {
-        name: 'Player 2',
-        territories: [2, 4],
-        score: 0,
-      },
-    ];
-    this.gameService.setPlayers(players);
-  }
-
-  setPlayerNameOnSegment() {
-    const players = this.gameService.getPlayers();
-    if (players.length === 2) {
-      this.colorSegment[1].playerName = players[0].name;
-      this.colorSegment[4].playerName = players[0].name;
-
-      this.colorSegment[2].playerName = players[1].name;
-      this.colorSegment[3].playerName = players[1].name;
-    } else if (players.length === 4) {
-      this.colorSegment[1].playerName = players[0].name;
-      this.colorSegment[2].playerName = players[1].name;
-      this.colorSegment[3].playerName = players[2].name;
-      this.colorSegment[4].playerName = players[3].name;
-    } else {
-      throw new Error('Invalid argument was passed for number of players');
-    }
+  setNumberOfPlayers(no: 2 | 4, isAgainstCPU: boolean) {
+    this.playerService.setPlayers(no, isAgainstCPU);
   }
 
   startGame() {
-    this.setNumberOfPlayer(2);
-    this.setColorSegments();
-    this.setPlayerNameOnSegment();
-    this.gameService.resetplayerTurn();
+    this.playerService.resetplayerTurn();
+    this._gameStart$.next();
+    console.log('start game');
+  }
+
+  restartGame() {
+    // restart game and set looser to be the first player
   }
 
   resetGame() {
-    // clear score and all of that
-    this.gameService.resetplayerTurn();
-    this.gameService.resetPlayers();
+    //clear score
+    this.playerService.resetplayerTurn();
+    this.playerService.resetPlayers();
   }
 }

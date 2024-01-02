@@ -9,9 +9,10 @@ import {
 } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class GameService {
+export class PlayerService {
   private noOfPlayers = 2;
   private playerTurn$ = new BehaviorSubject(1);
+  readonly isAgainstCPU$ = new BehaviorSubject(false);
 
   private readonly _switchTurn$ = new Subject<void>();
   private switchTurn$ = this._switchTurn$.asObservable().pipe(
@@ -22,7 +23,7 @@ export class GameService {
       this.playerTurn$.next(turn);
     })
   );
-  private players: Player[] = [];
+  private players$ = new BehaviorSubject<Player[]>([]);
 
   getNoOfPlayers() {
     return this.noOfPlayers;
@@ -33,12 +34,38 @@ export class GameService {
   }
 
   getPlayers() {
-    return Object.freeze(this.players);
+    return this.players$.asObservable();
   }
 
-  setPlayers(players: Player[]) {
-    this.players = players;
-    this.noOfPlayers = this.players.length;
+  setPlayers(no: 2 | 4, isAgainstCPU: boolean) {
+    const players = this.generatePlayersInfo(no, isAgainstCPU);
+    this.players$.next(players);
+    this.noOfPlayers = players.length;
+  }
+
+  private generatePlayersInfo(count: 2 | 4, isAgainstCPU: boolean): Player[] {
+    if (count === 2) {
+      return [
+        {
+          name: 'Player 1',
+          territories: [1, 4],
+          score: 0,
+        },
+        {
+          name: isAgainstCPU ? 'CPU' : 'Player 2',
+          territories: [2, 3],
+          score: 0,
+        },
+      ];
+    } else if (count === 4) {
+      return new Array(4).fill('k').map((_, i) => ({
+        name: 'Player ' + (i + 1),
+        territories: [i + 1],
+        score: 0,
+      }));
+    } else {
+      throw new Error('Invalid Argument passed for count');
+    }
   }
 
   nextPlayer() {
@@ -50,6 +77,6 @@ export class GameService {
   }
 
   resetPlayers() {
-    this.players = [];
+    this.players$.next([]);
   }
 }
