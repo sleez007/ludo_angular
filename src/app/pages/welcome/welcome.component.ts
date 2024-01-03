@@ -43,7 +43,7 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.gameEngine.setNumberOfPlayers(2, false);
-    this.gameEngine.startGame();
+    this.gameEngine.initializeGame();
     // setTimeout(() => {
     //   const destination = this.document.getElementById('l-road-7');
     //   const traveller = this.document.getElementById('lce-0');

@@ -1,25 +1,56 @@
 import { Injectable } from '@angular/core';
-import { Subject, map, switchMap, take, timer } from 'rxjs';
+import {
+  BehaviorSubject,
+  Subject,
+  distinctUntilChanged,
+  finalize,
+  last,
+  map,
+  share,
+  switchMap,
+  take,
+  takeLast,
+  tap,
+  timer,
+} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class DiceService {
-  private readonly startDice1$ = new Subject<void>();
-  private readonly startDice2$ = new Subject<void>();
-  readonly dice1$ = this.startDice1$.pipe(switchMap(() => this.spinTheDice()));
-  readonly dice2$ = this.startDice2$.pipe(switchMap(() => this.spinTheDice()));
+  private readonly _hasRolledDice$ = new BehaviorSubject(false);
+  readonly hasRolledDice$ = this._hasRolledDice$
+    .asObservable()
+    .pipe(share(), distinctUntilChanged());
+
+  private readonly _die1$ = new BehaviorSubject(1);
+  readonly die1$ = this._die1$.asObservable().pipe(share());
+  private readonly _die2$ = new BehaviorSubject(1);
+  readonly die2$ = this._die2$.asObservable().pipe(share());
 
   rollDice() {
-    this.startDice1$.next();
-    this.startDice2$.next();
+    this.spinTheDie(this._die2$);
+    this.spinTheDie(this._die1$, true);
   }
 
-  private spinTheDice() {
-    return timer(0, 50).pipe(
-      take(10),
-      map((_) => {
-        let total = Number((Math.random() * (6 - 1) + 1).toFixed(0));
-        return total;
-      })
-    );
+  private spinTheDie(sub: BehaviorSubject<number>, shouldNotifyDone = false) {
+    return timer(0, 50)
+      .pipe(
+        take(10),
+        map((_) => {
+          let total = Number((Math.random() * (6 - 1) + 1).toFixed(0));
+          return total;
+        })
+      )
+      .subscribe({
+        next: (d) => sub.next(d),
+        complete: () => {
+          if (shouldNotifyDone) {
+            this._hasRolledDice$.next(true);
+          }
+        },
+      });
+  }
+
+  markHasRolledDiceAsFalse() {
+    this._hasRolledDice$.next(false);
   }
 }

@@ -9,6 +9,34 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.animate {
+  transition: all 0.1s ease-out;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate3d(-50%, -50%, 10px) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-50%, -50%, 10px) rotate(180deg) scale(1.4);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 10px) rotate(360deg);
+  }
+}
+
+@keyframes blink {
+  0% {
+    background-color: auto;
+  }
+  50% {
+    background-color: #fff;
+  }
+  100% {
+    background-color: auto;
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
