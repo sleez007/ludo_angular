@@ -29,6 +29,8 @@ export class DiceService {
   rollDice() {
     this.spinTheDie(this._die2$);
     this.spinTheDie(this._die1$, true);
+    var audio = new Audio('/assets/sounds/roll_dice.mp3');
+    audio.play();
   }
 
   private spinTheDie(sub: BehaviorSubject<number>, shouldNotifyDone = false) {
