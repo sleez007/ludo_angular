@@ -12,6 +12,7 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
+import { MoveService } from './moves.service';
 import { Player } from '../../model';
 
 @Injectable({ providedIn: 'root' })
@@ -19,6 +20,7 @@ export class EngineService {
   private readonly playerService = inject(PlayerService);
   private readonly diceService = inject(DiceService);
   private readonly segment = inject(Segment);
+  private readonly moveService = inject(MoveService);
   readonly dice1$ = this.diceService.die1$;
   readonly dice2$ = this.diceService.die2$;
   readonly gameSegments$ = this.segment.segments$;
@@ -98,5 +100,9 @@ export class EngineService {
     //clear score
     this.playerService.resetplayerTurn();
     this.playerService.resetPlayers();
+  }
+
+  highlightPlayablePawns(moveValue: number, player: Player) {
+    this.moveService.highlightPlayablePawns(moveValue, player);
   }
 }

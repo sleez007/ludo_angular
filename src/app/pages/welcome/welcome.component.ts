@@ -31,8 +31,6 @@ import { tap } from 'rxjs';
   styleUrl: './welcome.component.scss',
 })
 export class WelcomeComponent implements OnInit {
-  private readonly renderer2 = inject(Renderer2);
-  @Inject(DOCUMENT) private readonly document = inject(DOCUMENT);
   readonly cd = inject(ChangeDetectorRef);
   private readonly gameEngine = inject(EngineService);
   readonly squareMatrix = SquareMatrix;
@@ -44,10 +42,5 @@ export class WelcomeComponent implements OnInit {
   ngOnInit(): void {
     this.gameEngine.setNumberOfPlayers(2, false);
     this.gameEngine.initializeGame();
-    // setTimeout(() => {
-    //   const destination = this.document.getElementById('l-road-7');
-    //   const traveller = this.document.getElementById('lce-0');
-    //   this.renderer2.appendChild(destination, traveller);
-    // }, 10000);
   }
 }

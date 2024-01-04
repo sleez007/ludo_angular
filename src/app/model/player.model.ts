@@ -14,4 +14,5 @@ export interface Pawn {
   killedBy: string[];
   position: number;
   territoryId: number;
+  done?: boolean;
 }

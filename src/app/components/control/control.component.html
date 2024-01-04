@@ -17,12 +17,45 @@
     <div>
       <div class="mt-4 flex justify-center">
         <button
-          *ngIf="!obs.hasRolledDice"
+          *ngIf="!obs.hasRolledDice; else pickOps"
           (click)="rollDice()"
           class="rounded bg-[royalblue] cursor-pointer text-white p-2 text-center"
         >
           Roll Dice
         </button>
+        <ng-template #pickOps>
+          <div
+            *ngIf="obs.currentPlayer"
+            class="flex justify-end items-center space-x-4"
+          >
+            <div
+              *ngIf="obs.dice1"
+              id="d1v"
+              class="flex justify-center items-center cursor-pointer rounded-[50%] h-[30px] w-[30px] bg-[royalblue] text-white"
+              (click)="highlightPlayablePawns(obs.dice1, obs.currentPlayer)"
+            >
+              {{ obs.dice1 }}
+            </div>
+            <div
+              *ngIf="obs.dice1 && obs.dice2"
+              id="dsv"
+              (click)="
+                highlightPlayablePawns(obs.dice1 + obs.dice2, obs.currentPlayer)
+              "
+              class="flex justify-center items-center cursor-pointer rounded-[50%] h-[30px] w-[30px] bg-[royalblue] text-white"
+            >
+              {{ obs.dice1 + obs.dice2 }}
+            </div>
+            <div
+              *ngIf="obs.dice2"
+              id="d2v"
+              (click)="highlightPlayablePawns(obs.dice2, obs.currentPlayer)"
+              class="flex justify-center items-center cursor-pointer rounded-[50%] h-[30px] w-[30px] bg-[royalblue] text-white"
+            >
+              {{ obs.dice2 }}
+            </div>
+          </div>
+        </ng-template>
       </div>
       <div class="text-center mt-4">Player: {{ obs.currentPlayer?.name }}</div>
     </div>

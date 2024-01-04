@@ -28,13 +28,22 @@ body {
 @keyframes blink {
   0% {
     background-color: auto;
+    transform: rotate(0deg);
   }
   50% {
     background-color: #fff;
   }
   100% {
     background-color: auto;
+    transform: rotate(360deg);
   }
+}
+
+.highlight {
+  cursor: pointer;
+  border: 2px dashed;
+  animation: blink 1s infinite linear;
+  z-index: 1;
 }
 
 @tailwind base;

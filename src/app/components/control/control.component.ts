@@ -3,6 +3,7 @@ import { DiceComponent } from '../dice/dice.component';
 import { EngineService } from '../../core/services/engine.service';
 import { CommonModule } from '@angular/common';
 import { filter, map, tap, withLatestFrom } from 'rxjs';
+import { Player } from '../../model';
 
 @Component({
   selector: 'app-control',
@@ -32,5 +33,9 @@ export class ControlComponent {
 
   rollDice() {
     this.gameEngine.rollDice();
+  }
+
+  highlightPlayablePawns(moveValue: number, player: Player) {
+    this.gameEngine.highlightPlayablePawns(moveValue, player);
   }
 }

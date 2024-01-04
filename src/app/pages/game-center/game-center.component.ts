@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './game-center.component.html',
-  styleUrl: './game-center.component.scss'
+  styleUrl: './game-center.component.scss',
 })
-export class GameCenterComponent {
-
-}
+export class GameCenterComponent {}
