@@ -13,6 +13,7 @@ import {
   tap,
   timer,
 } from 'rxjs';
+import { SoundEnum, SoundManager } from '../util/sound-manager';
 
 @Injectable({ providedIn: 'root' })
 export class DiceService {
@@ -26,11 +27,12 @@ export class DiceService {
   private readonly _die2$ = new BehaviorSubject(1);
   readonly die2$ = this._die2$.asObservable().pipe(share());
 
+  private readonly sound = new SoundManager(SoundEnum.DICE_ROLL_SOUND);
+
   rollDice() {
+    this.sound.play();
     this.spinTheDie(this._die2$);
     this.spinTheDie(this._die1$, true);
-    var audio = new Audio('/assets/sounds/roll_dice.mp3');
-    audio.play();
   }
 
   private spinTheDie(sub: BehaviorSubject<number>, shouldNotifyDone = false) {
