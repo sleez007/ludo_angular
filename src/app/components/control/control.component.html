@@ -29,27 +29,40 @@
             class="flex justify-end items-center space-x-4"
           >
             <div
-              *ngIf="obs.dice1"
               id="d1v"
               class="flex justify-center items-center cursor-pointer rounded-[50%] h-[30px] w-[30px] bg-[royalblue] text-white"
-              (click)="highlightPlayablePawns(obs.dice1, obs.currentPlayer)"
+              (click)="
+                highlightPlayablePawns(
+                  obs?.dice1 ?? 0,
+                  obs.currentPlayer,
+                  selectedVal.DIE_VALUE_1
+                )
+              "
             >
               {{ obs.dice1 }}
             </div>
             <div
-              *ngIf="obs.dice1 && obs.dice2"
               id="dsv"
               (click)="
-                highlightPlayablePawns(obs.dice1 + obs.dice2, obs.currentPlayer)
+                highlightPlayablePawns(
+                  obs?.dice1 ?? 0 + (obs.dice2 ?? 0),
+                  obs.currentPlayer,
+                  selectedVal.DICE_VALUE
+                )
               "
               class="flex justify-center items-center cursor-pointer rounded-[50%] h-[30px] w-[30px] bg-[royalblue] text-white"
             >
-              {{ obs.dice1 + obs.dice2 }}
+              {{ (obs?.dice1 ?? 0) + (obs?.dice2 ?? 0) }}
             </div>
             <div
-              *ngIf="obs.dice2"
               id="d2v"
-              (click)="highlightPlayablePawns(obs.dice2, obs.currentPlayer)"
+              (click)="
+                highlightPlayablePawns(
+                  obs.dice2 ?? 0,
+                  obs.currentPlayer,
+                  selectedVal.DIE_VALUE_2
+                )
+              "
               class="flex justify-center items-center cursor-pointer rounded-[50%] h-[30px] w-[30px] bg-[royalblue] text-white"
             >
               {{ obs.dice2 }}

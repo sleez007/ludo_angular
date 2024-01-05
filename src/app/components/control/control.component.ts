@@ -2,8 +2,7 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { DiceComponent } from '../dice/dice.component';
 import { EngineService } from '../../core/services/engine.service';
 import { CommonModule } from '@angular/common';
-import { filter, map, tap, withLatestFrom } from 'rxjs';
-import { Player } from '../../model';
+import { Player, SelectedVal } from '../../model';
 
 @Component({
   selector: 'app-control',
@@ -27,6 +26,8 @@ export class ControlComponent {
 
   readonly currentPlayer$ = this.gameEngine.currentPlayer$;
 
+  readonly selectedVal = SelectedVal;
+
   startGame() {
     this.gameEngine.startGame();
   }
@@ -35,7 +36,11 @@ export class ControlComponent {
     this.gameEngine.rollDice();
   }
 
-  highlightPlayablePawns(moveValue: number, player: Player) {
-    this.gameEngine.highlightPlayablePawns(moveValue, player);
+  highlightPlayablePawns(
+    moveValue: number,
+    player: Player,
+    valuePickerId: SelectedVal
+  ) {
+    this.gameEngine.highlightPlayablePawns(moveValue, player, valuePickerId);
   }
 }

@@ -30,6 +30,7 @@ export class DiceService {
   private readonly sound = new SoundManager(SoundEnum.DICE_ROLL_SOUND);
 
   rollDice() {
+    this.sound.stop();
     this.sound.play();
     this.spinTheDie(this._die2$);
     this.spinTheDie(this._die1$, true);
@@ -56,5 +57,18 @@ export class DiceService {
 
   markHasRolledDiceAsFalse() {
     this._hasRolledDice$.next(false);
+  }
+
+  resetDie1() {
+    this._die1$.next(0);
+  }
+
+  resetDie2() {
+    this._die2$.next(0);
+  }
+
+  resetDice() {
+    this.resetDie1();
+    this.resetDie2();
   }
 }

@@ -13,7 +13,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { MoveService } from './moves.service';
-import { Player } from '../../model';
+import { Pawn, Player, SelectedVal } from '../../model';
 
 @Injectable({ providedIn: 'root' })
 export class EngineService {
@@ -28,6 +28,10 @@ export class EngineService {
   readonly players$ = this.playerService.getPlayers();
   readonly currentTurn$ = this.playerService.getCurrentTurn();
   readonly currentPlayer$ = this.playerService.currentPlayer$;
+
+  readonly selectedFigure$ = this.moveService.selectedFigure$;
+
+  selectedVal: SelectedVal | null = null;
 
   readonly hasRolledDice$ = this.diceService.hasRolledDice$.pipe(
     withLatestFrom(
@@ -102,7 +106,33 @@ export class EngineService {
     this.playerService.resetPlayers();
   }
 
-  highlightPlayablePawns(moveValue: number, player: Player) {
+  clearCurrentDiceVal() {
+    switch (this.selectedVal) {
+      case SelectedVal.DIE_VALUE_1: {
+        this.diceService.resetDie1();
+        break;
+      }
+      case SelectedVal.DIE_VALUE_2: {
+        this.diceService.resetDie2();
+        break;
+      }
+      case SelectedVal.DICE_VALUE: {
+        this.diceService.resetDice();
+        break;
+      }
+    }
+  }
+
+  highlightPlayablePawns(
+    moveValue: number,
+    player: Player,
+    valuePickerId: SelectedVal
+  ) {
+    this.selectedVal = valuePickerId;
     this.moveService.highlightPlayablePawns(moveValue, player);
+  }
+
+  playMove(pawn: Pawn, moveValue: number, player: Player) {
+    return this.moveService.playMove(pawn, moveValue, player);
   }
 }
