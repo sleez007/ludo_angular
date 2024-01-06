@@ -1,4 +1,10 @@
-<ng-container *ngIf="{ fig: figure$ | async } as obs">
+<ng-container
+  *ngIf="{
+    fig: figure$ | async,
+    players: players$ | async,
+    diceSum: diceSum$ | async
+  } as obs"
+>
   <div
     class="home | w-[300px] h-[300px] flex items-center justify-center relative"
     [style.backgroundColor]="color"
@@ -17,7 +23,9 @@
             [id]="idPrefix + 'ce-0'"
             [style.backgroundColor]="diceColor"
             class="rounded-[50%] h-[30px] w-[30px] cursor-pointer"
-            (click)="pawnClick(p1.id, obs.fig)"
+            (click)="
+              pawnClick(p1.id, obs.players ?? [], obs.diceSum ?? 0, obs.fig)
+            "
           ></div>
         </div>
         <div
@@ -27,7 +35,9 @@
           <div
             #p2
             [id]="idPrefix + 'ce-1'"
-            (click)="pawnClick(p2.id, obs.fig)"
+            (click)="
+              pawnClick(p2.id, obs.players ?? [], obs.diceSum ?? 0, obs.fig)
+            "
             [style.backgroundColor]="diceColor"
             class="rounded-[50%] h-[30px] w-[30px] cursor-pointer"
           ></div>
@@ -41,7 +51,9 @@
           <div
             #p3
             [id]="idPrefix + 'ce-2'"
-            (click)="pawnClick(p3.id, obs.fig)"
+            (click)="
+              pawnClick(p3.id, obs.players ?? [], obs.diceSum ?? 0, obs.fig)
+            "
             [style.backgroundColor]="diceColor"
             class="rounded-[50%] h-[30px] w-[30px] cursor-pointer"
           ></div>
@@ -54,7 +66,9 @@
             #p4
             [id]="idPrefix + 'ce-3'"
             [style.backgroundColor]="diceColor"
-            (click)="pawnClick(p4.id, obs.fig)"
+            (click)="
+              pawnClick(p4.id, obs.players ?? [], obs.diceSum ?? 0, obs.fig)
+            "
             class="rounded-[50%] h-[30px] w-[30px] cursor-pointer"
           ></div>
         </div>

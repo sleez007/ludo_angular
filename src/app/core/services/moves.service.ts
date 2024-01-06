@@ -9,6 +9,15 @@ import {
 import { Pawn, Player } from '../../model';
 import { BehaviorSubject } from 'rxjs';
 
+type cb = (
+  pawn: Pawn,
+  position: number,
+  madeAkill: boolean,
+  player: Player,
+  players: Player[],
+  killedPawn?: Pawn
+) => void;
+
 @Injectable({ providedIn: 'root' })
 export class MoveService {
   private readonly rendererFactory = inject(RendererFactory2);
@@ -44,27 +53,143 @@ export class MoveService {
     this._selectedFigure$.next({ player, value: moveValue });
   }
 
-  playMove(pawn: Pawn, moveValue: number, player: Player) {
+  playMove(
+    pawn: Pawn,
+    moveValue: number,
+    player: Player,
+    players: Player[],
+    diceSum: number,
+    cb: cb
+  ) {
     const traveller = this.document.getElementById(pawn.id);
     const pawnIdInitial = pawn.id.substring(0, 1);
-    let destination: HTMLDivElement | null = null;
     if (pawn.position === -1) {
-      // move the pawn out of the house
-      destination = this.document.getElementById(
-        pawnIdInitial + '-road-8'
-      ) as HTMLDivElement | null;
-      this.renderer2.appendChild(destination, traveller);
-
-      // deselect all pawns
-      this.deselectAllActivePowns(player.pawns, (p) => !!p);
-      this._selectedFigure$.next({ player, value: 0 });
-      // update the pawn position in the store
+      this.playHomePawn(pawnIdInitial, traveller, player);
+      // Todo please kindly check if a kill happened in the future
+      cb(pawn, 8, false, player, players);
       return true;
     }
-
-    //This gives us a concrete headsup where the element is located
-    const currLocationId = traveller?.parentElement?.id;
+    this.playOutsidePawn(
+      pawnIdInitial,
+      traveller,
+      player,
+      moveValue,
+      diceSum,
+      true
+    );
     return true;
+  }
+
+  private playOutsidePawn(
+    pawnIdInitial: string,
+    traveller: HTMLElement | null,
+    player: Player,
+    moveValue: number,
+    diceSum: number,
+    animate: boolean = false
+  ) {
+    let i = 0;
+    let mvCount = 1;
+    const interval = setInterval(
+      () => {
+        ++i;
+        //This gives us a concrete headsup where the element is located
+        const currLocationId = traveller?.parentElement?.id;
+        if (currLocationId) {
+          const homePrefix = currLocationId.substring(0, 1);
+          const homeSuffix = +currLocationId.split('-')[2];
+          if (pawnIdInitial === homePrefix && homeSuffix === 6) {
+            // at this point it should go home
+          } else if (homeSuffix === 12) {
+          } else {
+            this.domMover(homePrefix, homeSuffix, mvCount, traveller);
+          }
+        } else {
+          throw new Error('Invalid location detected');
+        }
+        console.log(i, moveValue, mvCount, 'na them');
+        if (i === moveValue) {
+          clearInterval(interval);
+        }
+      },
+      animate ? 300 : 0
+    );
+    // deselect all pawns
+    this.deselectAllActivePowns(player.pawns, (p) => !!p);
+    this._selectedFigure$.next({ player, value: 0 });
+  }
+
+  //   private playOutsidePawn(
+  //     pawnIdInitial: string,
+  //     traveller: HTMLElement | null,
+  //     player: Player,
+  //     moveValue: number,
+  //     diceSum: number
+  //   ) {
+  //     //This gives us a concrete headsup where the element is located
+  //     const currLocationId = traveller?.parentElement?.id;
+  //     if (currLocationId) {
+  //       const homePrefix = currLocationId.substring(0, 1);
+  //       const homeSuffix = +currLocationId.split('-')[2];
+
+  //       if (pawnIdInitial === homePrefix && homeSuffix === 6) {
+  //         // at this point it should go home
+  //       }
+  //       if (homeSuffix === 12) {
+  //         // at this point it's at the end of the road and needs to make a new turn
+  //       } else {
+  //         // proceed with the normal flow and call recursively for as along as moveValue is not 1;
+
+  //         this.domMover(homePrefix, homeSuffix, 1, traveller);
+
+  //         if (moveValue > 1) {
+  //           this.playOutsidePawn(
+  //             pawnIdInitial,
+  //             traveller,
+  //             player,
+  //             --moveValue,
+  //             diceSum
+  //           );
+  //         }
+  //       }
+  //     } else {
+  //       throw new Error('Invalid location detected');
+  //     }
+  //   }
+
+  private domMover(
+    homePrefix: string,
+    homeSuffix: number,
+    steps: number,
+    traveller: HTMLElement | null
+  ) {
+    const destination = this.document.getElementById(
+      homePrefix + '-road-' + (homeSuffix + steps)
+    ) as HTMLDivElement | null;
+    this.renderer2.appendChild(destination, traveller);
+    console.log(destination?.childElementCount);
+    return destination;
+  }
+
+  /**
+   * @description This method helps with moving a pawn out of the house
+   * @param pawnIdInitial
+   * @param traveller
+   * @param player
+   */
+  private playHomePawn(
+    pawnIdInitial: string,
+    traveller: HTMLElement | null,
+    player: Player
+  ) {
+    const destination = this.document.getElementById(
+      pawnIdInitial + '-road-8'
+    ) as HTMLDivElement | null;
+    this.renderer2.appendChild(destination, traveller);
+
+    // deselect all pawns
+    this.deselectAllActivePowns(player.pawns, (p) => !!p);
+    this._selectedFigure$.next({ player, value: 0 });
   }
 
   /**

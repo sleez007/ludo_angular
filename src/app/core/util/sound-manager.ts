@@ -14,6 +14,7 @@ export class SoundManager {
 
   play() {
     try {
+      this.stop();
       this.audio.play();
     } catch (ex: unknown) {
       throw new Error(

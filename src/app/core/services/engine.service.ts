@@ -132,7 +132,20 @@ export class EngineService {
     this.moveService.highlightPlayablePawns(moveValue, player);
   }
 
-  playMove(pawn: Pawn, moveValue: number, player: Player) {
-    return this.moveService.playMove(pawn, moveValue, player);
+  playMove(
+    pawn: Pawn,
+    moveValue: number,
+    player: Player,
+    players: Player[],
+    diceSum: number
+  ) {
+    return this.moveService.playMove(
+      pawn,
+      moveValue,
+      player,
+      players,
+      diceSum,
+      this.playerService.updatePawnPosition
+    );
   }
 }

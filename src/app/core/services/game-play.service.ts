@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Player } from '../../model';
+import { Pawn, Player } from '../../model';
 import {
   BehaviorSubject,
   Observable,
@@ -124,5 +124,31 @@ export class PlayerService {
     const result = !(dice1 != 6 && dice2 != 6 && isAllInHouse);
     console.log('see...', dice1, dice2, isAllInHouse, result);
     return result;
+  }
+
+  updatePawnPosition(
+    pawn: Pawn,
+    position: number,
+    madeAkill: boolean,
+    player: Player,
+    players: Player[],
+    killedPawn?: Pawn
+  ) {
+    players = [...players];
+    const currPlayerIndex = players.findIndex((p) => p.name === player.name);
+    if (currPlayerIndex === -1) throw new Error('Invalid player');
+    const currPawn = players[currPlayerIndex].pawns.find(
+      (p) => p.id === pawn.id
+    );
+    if (currPawn) currPawn.position = position;
+    if (madeAkill && killedPawn) {
+      this.markKilledPawnAsKilled(players, killedPawn);
+    }
+
+    this.players$.next(players);
+  }
+
+  markKilledPawnAsKilled(players: Player[], killedPawn: Pawn) {
+    throw new Error('Unimplemented method');
   }
 }
