@@ -75,6 +75,7 @@ export class MoveService {
       player,
       moveValue,
       diceSum,
+      pawn,
       true
     );
     return true;
@@ -86,6 +87,7 @@ export class MoveService {
     player: Player,
     moveValue: number,
     diceSum: number,
+    pawn: Pawn,
     animate: boolean = false
   ) {
     let i = 0;
@@ -97,60 +99,88 @@ export class MoveService {
         const currLocationId = traveller?.parentElement?.id;
         if (currLocationId) {
           const homePrefix = currLocationId.substring(0, 1);
-          const homeSuffix = +currLocationId.split('-')[2];
+          const homeSuffix =
+            +currLocationId.split('-')[currLocationId.split('-').length - 1];
           if (pawnIdInitial === homePrefix && homeSuffix === 6) {
+            this.domMover(
+              homePrefix,
+              0,
+              0,
+              traveller,
+              currLocationId,
+              pawnIdInitial,
+              true
+            );
             // at this point it should go home
           } else if (homeSuffix === 12) {
+            const routes = player.pathOrder[pawn.territoryId];
+            const currIndex = routes.findIndex((s) => s === homePrefix);
+            if (currIndex == -1 || currIndex == routes.length - 1)
+              throw new Error('Invalid next');
+
+            const nextMaze = routes[currIndex + 1];
+
+            this.domMover(
+              nextMaze,
+              0,
+              0,
+              traveller,
+              currLocationId,
+              pawnIdInitial
+            );
           } else {
-            this.domMover(homePrefix, homeSuffix, mvCount, traveller);
+            this.domMover(
+              homePrefix,
+              homeSuffix,
+              mvCount,
+              traveller,
+              currLocationId,
+              pawnIdInitial
+            );
           }
         } else {
           throw new Error('Invalid location detected');
         }
-        console.log(i, moveValue, mvCount, 'na them');
+
         if (i === moveValue) {
           clearInterval(interval);
         }
       },
-      animate ? 300 : 0
+      animate ? 250 : -1000
     );
     // deselect all pawns
     this.deselectAllActivePowns(player.pawns, (p) => !!p);
     this._selectedFigure$.next({ player, value: 0 });
   }
 
-  //   private playOutsidePawn(
+  //   private playOutsidePawnNoAnim(
   //     pawnIdInitial: string,
   //     traveller: HTMLElement | null,
   //     player: Player,
   //     moveValue: number,
-  //     diceSum: number
+  //     diceSum: number,
+  //     pawn: Pawn
   //   ) {
   //     //This gives us a concrete headsup where the element is located
   //     const currLocationId = traveller?.parentElement?.id;
   //     if (currLocationId) {
   //       const homePrefix = currLocationId.substring(0, 1);
-  //       const homeSuffix = +currLocationId.split('-')[2];
-
+  //       const homeSuffix =
+  //         +currLocationId.split('-')[currLocationId.split('-').length - 1];
   //       if (pawnIdInitial === homePrefix && homeSuffix === 6) {
+  //         //alert('bug');
   //         // at this point it should go home
-  //       }
-  //       if (homeSuffix === 12) {
-  //         // at this point it's at the end of the road and needs to make a new turn
+  //       } else if (homeSuffix === 12) {
+  //         const routes = player.pathOrder[pawn.territoryId];
+  //         const currIndex = routes.findIndex((s) => s === homePrefix);
+  //         if (currIndex == -1 || currIndex == routes.length - 1)
+  //           throw new Error('Invalid next');
+
+  //         const nextMaze = routes[currIndex + 1];
+
+  //         this.domMover(nextMaze, 0, 0, traveller);
   //       } else {
-  //         // proceed with the normal flow and call recursively for as along as moveValue is not 1;
-
-  //         this.domMover(homePrefix, homeSuffix, 1, traveller);
-
-  //         if (moveValue > 1) {
-  //           this.playOutsidePawn(
-  //             pawnIdInitial,
-  //             traveller,
-  //             player,
-  //             --moveValue,
-  //             diceSum
-  //           );
-  //         }
+  //         this.domMover(homePrefix, homeSuffix, moveValue, traveller);
   //       }
   //     } else {
   //       throw new Error('Invalid location detected');
@@ -161,10 +191,15 @@ export class MoveService {
     homePrefix: string,
     homeSuffix: number,
     steps: number,
-    traveller: HTMLElement | null
+    traveller: HTMLElement | null,
+    id: string,
+    pawnIdInitial: string,
+    isFinal = false
   ) {
+    const finalr = isFinal || id.includes('-inner-road-');
+    const road = finalr ? '-inner-road-' : '-road-';
     const destination = this.document.getElementById(
-      homePrefix + '-road-' + (homeSuffix + steps)
+      homePrefix + road + (homeSuffix + steps)
     ) as HTMLDivElement | null;
     this.renderer2.appendChild(destination, traveller);
     console.log(destination?.childElementCount);

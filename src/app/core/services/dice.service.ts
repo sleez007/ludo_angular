@@ -46,9 +46,10 @@ export class DiceService {
         })
       )
       .subscribe({
-        next: (d) => sub.next(d),
+        next: (d) => sub.next(6),
         complete: () => {
           if (shouldNotifyDone) {
+            sub.next(55);
             this._hasRolledDice$.next(true);
           }
         },

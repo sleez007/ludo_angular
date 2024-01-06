@@ -61,23 +61,23 @@ export class PlayerService {
       return [
         {
           name: 'Player 1',
-          territories: [1, 4],
+          territories: [1, 3],
           score: 0,
           pathOrder: {
             1: data[0].pathOrder,
-            4: data[3].pathOrder,
+            3: data[2].pathOrder,
           },
-          pawns: [...data[0].pawns, ...data[3].pawns],
+          pawns: [...data[0].pawns, ...data[2].pawns],
         },
         {
           name: isAgainstCPU ? 'CPU' : 'Player 2',
-          territories: [2, 3],
+          territories: [2, 4],
           score: 0,
           pathOrder: {
             2: data[1].pathOrder,
-            3: data[2].pathOrder,
+            4: data[3].pathOrder,
           },
-          pawns: [...data[1].pawns, ...data[2].pawns],
+          pawns: [...data[1].pawns, ...data[3].pawns],
         },
       ];
     } else if (count === 4) {

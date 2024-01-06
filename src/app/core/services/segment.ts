@@ -21,7 +21,7 @@ export class Segment {
   }
 
   private setSegmentForTwoPlayers(players: Player[]) {
-    const pl = [players[0], players[1], players[1], players[0]];
+    const pl = [players[0], players[1], players[0], players[1]];
     this.setSegmentForFourPlayers(pl);
   }
 
@@ -56,12 +56,12 @@ export class Segment {
 
     const sqr3 = this.createSquare(
       [
-        [12, 11, 10, 9, 8, 7],
-        [4, 3, 2, 1, 0, 6],
         [0, 1, 2, 3, 4, 5],
+        [4, 3, 2, 1, 0, 6],
+        [12, 11, 10, 9, 8, 7],
       ],
       [],
-      'border-t border-black',
+      'border-l border-black',
       colors[2].dice,
       'd',
       colors[2].color,
@@ -70,18 +70,23 @@ export class Segment {
 
     const sqr4 = this.createSquare(
       [
-        [0, 1, 2, 3, 4, 5],
-        [4, 3, 2, 1, 0, 6],
         [12, 11, 10, 9, 8, 7],
+        [4, 3, 2, 1, 0, 6],
+        [0, 1, 2, 3, 4, 5],
       ],
       [],
-      'border-l border-black',
+      'border-t  border-black',
       colors[3].dice,
       'o',
       colors[3].color,
       players[3].name
     );
-    console.log('should be assigned');
+    console.log('should be assigned', {
+      [SquareMatrix.SQUARE_1]: sqr1,
+      [SquareMatrix.SQUARE_2]: sqr2,
+      [SquareMatrix.SQUARE_3]: sqr3,
+      [SquareMatrix.SQUARE_4]: sqr4,
+    });
     this._segments$.next({
       [SquareMatrix.SQUARE_1]: sqr1,
       [SquareMatrix.SQUARE_2]: sqr2,

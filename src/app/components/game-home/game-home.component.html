@@ -24,7 +24,7 @@
             [style.backgroundColor]="diceColor"
             class="rounded-[50%] h-[30px] w-[30px] cursor-pointer"
             (click)="
-              pawnClick(p1.id, obs.players ?? [], obs.diceSum ?? 0, obs.fig)
+              pawnClick(p1.id, obs?.players ?? [], obs.diceSum ?? 0, obs.fig)
             "
           ></div>
         </div>
@@ -36,7 +36,7 @@
             #p2
             [id]="idPrefix + 'ce-1'"
             (click)="
-              pawnClick(p2.id, obs.players ?? [], obs.diceSum ?? 0, obs.fig)
+              pawnClick(p2.id, obs?.players ?? [], obs.diceSum ?? 0, obs.fig)
             "
             [style.backgroundColor]="diceColor"
             class="rounded-[50%] h-[30px] w-[30px] cursor-pointer"
@@ -52,7 +52,7 @@
             #p3
             [id]="idPrefix + 'ce-2'"
             (click)="
-              pawnClick(p3.id, obs.players ?? [], obs.diceSum ?? 0, obs.fig)
+              pawnClick(p3.id, obs?.players ?? [], obs.diceSum ?? 0, obs.fig)
             "
             [style.backgroundColor]="diceColor"
             class="rounded-[50%] h-[30px] w-[30px] cursor-pointer"
@@ -67,7 +67,7 @@
             [id]="idPrefix + 'ce-3'"
             [style.backgroundColor]="diceColor"
             (click)="
-              pawnClick(p4.id, obs.players ?? [], obs.diceSum ?? 0, obs.fig)
+              pawnClick(p4.id, obs?.players ?? [], obs.diceSum ?? 0, obs.fig)
             "
             class="rounded-[50%] h-[30px] w-[30px] cursor-pointer"
           ></div>

@@ -41,31 +41,33 @@
         <app-center-square />
         <app-square-grid
           [isVertical]="false"
-          [matrix]="obs.segment[squareMatrix.SQUARE_4].main"
-          [color]="obs.segment[squareMatrix.SQUARE_4].color"
-          [cssColor]="obs.segment[squareMatrix.SQUARE_4].cssClass"
-          [idPrefix]="obs.segment[squareMatrix.SQUARE_4].idPrefix"
-        />
-      </div>
-      <div class="row | flex">
-        <app-game-home
-          [color]="obs.segment[squareMatrix.SQUARE_3].color"
-          [diceColor]="obs.segment[squareMatrix.SQUARE_3].diceColor"
-          [playerName]="obs.segment[squareMatrix.SQUARE_3].playerName ?? ''"
-          [idPrefix]="obs.segment[squareMatrix.SQUARE_3].idPrefix"
-        />
-        <app-square-grid
-          [isVertical]="true"
           [matrix]="obs.segment[squareMatrix.SQUARE_3].main"
           [color]="obs.segment[squareMatrix.SQUARE_3].color"
           [cssColor]="obs.segment[squareMatrix.SQUARE_3].cssClass"
           [idPrefix]="obs.segment[squareMatrix.SQUARE_3].idPrefix"
         />
+      </div>
+      <div class="row | flex">
         <app-game-home
           [color]="obs.segment[squareMatrix.SQUARE_4].color"
           [diceColor]="obs.segment[squareMatrix.SQUARE_4].diceColor"
           [playerName]="obs.segment[squareMatrix.SQUARE_4].playerName ?? ''"
           [idPrefix]="obs.segment[squareMatrix.SQUARE_4].idPrefix"
+        />
+
+        <app-square-grid
+          [isVertical]="true"
+          [matrix]="obs.segment[squareMatrix.SQUARE_4].main"
+          [color]="obs.segment[squareMatrix.SQUARE_4].color"
+          [cssColor]="obs.segment[squareMatrix.SQUARE_4].cssClass"
+          [idPrefix]="obs.segment[squareMatrix.SQUARE_4].idPrefix"
+        />
+
+        <app-game-home
+          [color]="obs.segment[squareMatrix.SQUARE_3].color"
+          [diceColor]="obs.segment[squareMatrix.SQUARE_3].diceColor"
+          [playerName]="obs.segment[squareMatrix.SQUARE_3].playerName ?? ''"
+          [idPrefix]="obs.segment[squareMatrix.SQUARE_3].idPrefix"
         />
       </div>
     </div>

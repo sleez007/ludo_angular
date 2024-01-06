@@ -29,7 +29,7 @@
     @for (item of matrix[1]; track $index) {
     <app-square
       [value]="item"
-      [idPrefix]="idPrefix + '-inner'"
+      [idPrefix]="idPrefix + (item != 6 ? '-inner' : '')"
       [class]="item != 4 ? cssColor : ''"
       class="flex-1"
       [style.backgroundColor]="item != 6 ? color : ''"
