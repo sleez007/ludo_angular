@@ -202,7 +202,7 @@ export class MoveService {
       homePrefix + road + (homeSuffix + steps)
     ) as HTMLDivElement | null;
     this.renderer2.appendChild(destination, traveller);
-    console.log(destination?.childElementCount);
+    //console.log(destination?.childElementCount);
     return destination;
   }
 

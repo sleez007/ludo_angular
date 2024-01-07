@@ -96,7 +96,7 @@ export class PlayerService {
   }
 
   nextPlayer() {
-    console.log('should switch turns');
+    //log('should switch turns');
     this._switchTurn$.next();
   }
 
@@ -122,7 +122,6 @@ export class PlayerService {
   ): boolean {
     const isAllInHouse = player.pawns.every((pawn) => pawn.position === -1);
     const result = !(dice1 != 6 && dice2 != 6 && isAllInHouse);
-    console.log('see...', dice1, dice2, isAllInHouse, result);
     return result;
   }
 

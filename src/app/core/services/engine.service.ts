@@ -41,7 +41,6 @@ export class EngineService {
       this.playerService.switchTurn$
     ),
     tap(([hasRolled, player, die1, die2]) => {
-      console.log(hasRolled, player, die1, die2, 'here goes our answer');
       if (hasRolled) {
         if (
           !this.playerService.checkDiceValueAndIfPlayerHasPawnOutside(
@@ -56,7 +55,6 @@ export class EngineService {
         } else {
         }
       } else {
-        console.log('new value pushed false');
       }
     }),
     map(([hasRolled, , ,]) => hasRolled)
@@ -93,7 +91,6 @@ export class EngineService {
   initializeGame() {
     this.playerService.resetplayerTurn();
     this._gameStart$.next();
-    console.log('start game');
   }
 
   restartGame() {

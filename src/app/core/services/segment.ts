@@ -81,12 +81,6 @@ export class Segment {
       colors[3].color,
       players[3].name
     );
-    console.log('should be assigned', {
-      [SquareMatrix.SQUARE_1]: sqr1,
-      [SquareMatrix.SQUARE_2]: sqr2,
-      [SquareMatrix.SQUARE_3]: sqr3,
-      [SquareMatrix.SQUARE_4]: sqr4,
-    });
     this._segments$.next({
       [SquareMatrix.SQUARE_1]: sqr1,
       [SquareMatrix.SQUARE_2]: sqr2,
